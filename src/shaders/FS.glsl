@@ -34,7 +34,7 @@ void main()
 	vec3 unitOrthogonal = normalize(blackHole.position - closestPoint);
 
 	float deflectionAngle = getDeflectionAngle(length(blackHole.position - closestPoint));
-	if (deflectionAngle < -0.5 || deflectionAngle > PI)
+	if (deflectionAngle < -0.5 || deflectionAngle > 2 * PI)
 	{
 		outColor = vec4(0, 0, 0, 1);
 		return;

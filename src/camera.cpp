@@ -80,6 +80,8 @@ float Camera::getRadius() const
 void Camera::setRadius(float radius)
 {
 	m_radius = radius;
+
+	updateViewMatrix();
 }
 
 glm::vec3 Camera::getPosition() const

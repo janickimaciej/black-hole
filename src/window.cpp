@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include "guis/leftPanel.hpp"
+
 #include <string>
 
 Window::Window(const glm::ivec2& initialSize) :
@@ -78,6 +80,10 @@ void Window::resizeCallback(GLFWwindow* windowPtr, int width, int height)
 void Window::cursorMovementCallback(GLFWwindow* windowPtr, double x, double y)
 {
 	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
+	if (window->isCursorInGUI())
+	{
+		return;
+	}
 
 	glm::vec2 currentPos{static_cast<float>(x), static_cast<float>(y)};
 	glm::vec2 offset = currentPos - window->m_lastCursorPos;
@@ -94,7 +100,20 @@ void Window::cursorMovementCallback(GLFWwindow* windowPtr, double x, double y)
 void Window::scrollCallback(GLFWwindow* windowPtr, double, double yOffset)
 {
 	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
+	if (window->isCursorInGUI())
+	{
+		return;
+	}
 
 	static constexpr float sensitivity = 1.1f;
 	window->m_scene->zoomCamera(std::pow(sensitivity, static_cast<float>(yOffset)));
+}
+
+bool Window::isCursorInGUI()
+{
+	double x{};
+	double y{};
+	glfwGetCursorPos(m_windowPtr, &x, &y);
+	glm::vec2 cursorPos{static_cast<float>(x), static_cast<float>(y)};
+	return cursorPos.x <= LeftPanel::width;
 }

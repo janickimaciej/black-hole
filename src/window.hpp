@@ -29,4 +29,6 @@ private:
 	static void resizeCallback(GLFWwindow* windowPtr, int width, int height);
 	static void cursorMovementCallback(GLFWwindow* windowPtr, double x, double y);
 	static void scrollCallback(GLFWwindow* windowPtr, double, double yOffset);
+
+	bool isCursorInGUI();
 };

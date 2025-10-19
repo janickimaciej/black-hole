@@ -21,7 +21,6 @@ out vec4 outColor;
 
 vec3 getIncident();
 float getDeflectionAngle(float rayBlackHoleDistance);
-float solveDepressedCubicEquation(float p, float q);
 float findUpperLimit(float constTerm);
 float fun(float w, float constTerm);
 float funDeriv(float w, float constTerm);
@@ -71,13 +70,6 @@ float getDeflectionAngle(float rayBlackHoleDistance)
 	}
 
 	return 2 * sum * dw - PI;
-}
-
-float solveDepressedCubicEquation(float p, float q)
-{
-	float squareRootTerm = sqrt(pow(q, 2) / 4.0 + pow(p, 3) / 27.0);
-	return pow(-q / 2.0 + squareRootTerm, 1.0 / 3.0) +
-		pow(-q / 2.0 - squareRootTerm, 1.0 / 3.0);
 }
 
 float findUpperLimit(float constTerm)

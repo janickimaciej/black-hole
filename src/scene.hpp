@@ -4,7 +4,6 @@
 #include "camera.hpp"
 #include "quad.hpp"
 #include "scene.hpp"
-#include "shaderProgram.hpp"
 #include "skybox.hpp"
 #include "skyboxPaths.hpp"
 
@@ -13,22 +12,21 @@
 class Scene
 {
 public:
-	Scene(const glm::ivec2& windowSize);
+	Scene(const glm::ivec2& viewportSize);
 	void render() const;
-	void updateWindowSize();
+	void updateViewportSize();
 
-	void addCameraPitch(float pitchRad);
-	void addCameraYaw(float yawRad);
+	void addPitchCamera(float pitchRad);
+	void addYawCamera(float yawRad);
 	void zoomCamera(float zoom);
 
-	float getCameraRadius() const;
-	void setCameraRadius(float radius);
+	float getRadiusCamera() const;
+	void setRadiusCamera(float radius);
 	float getBlackHoleMass() const;
 	void setBlackHoleMass(float mass);
 
 private:
-	ShaderProgram m_shaderProgram{"src/shaders/VS.glsl", "src/shaders/FS.glsl"};
-	const glm::ivec2& m_windowSize{};
+	const glm::ivec2& m_viewportSize{};
 
 	Camera m_camera;
 	Quad m_quad{};

@@ -1,14 +1,14 @@
 #include "camera.hpp"
 
+#include "shaderPrograms.hpp"
+
 #include <glm/gtc/constants.hpp>
 
-Camera::Camera(float fovYDeg, float aspectRatio, float nearPlane, float farPlane,
-	const ShaderProgram& shaderProgram) :
+Camera::Camera(float fovYDeg, float aspectRatio, float nearPlane, float farPlane) :
 	m_aspectRatio{aspectRatio},
 	m_fovYDeg{fovYDeg},
 	m_nearPlane{nearPlane},
-	m_farPlane{farPlane},
-	m_shaderProgram{shaderProgram}
+	m_farPlane{farPlane}
 {
 	updateViewMatrix();
 	updateProjectionMatrix();
@@ -129,9 +129,9 @@ void Camera::updateProjectionMatrix()
 
 void Camera::updateShaders() const
 {
-	m_shaderProgram.use();
-	m_shaderProgram.setUniform("nearPlane", m_nearPlane);
-	m_shaderProgram.setUniform("farPlane", m_farPlane);
-	m_shaderProgram.setUniform("cameraPosition", getPosition());
-	m_shaderProgram.setUniform("projectionViewInverse", getMatrixInverse());
+	ShaderPrograms::hole->use();
+	ShaderPrograms::hole->setUniform("nearPlane", m_nearPlane);
+	ShaderPrograms::hole->setUniform("farPlane", m_farPlane);
+	ShaderPrograms::hole->setUniform("cameraPosition", getPosition());
+	ShaderPrograms::hole->setUniform("projectionViewInverse", getMatrixInverse());
 }

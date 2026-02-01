@@ -29,12 +29,13 @@
     <ClCompile Include="dep\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dep\stb_image.cpp" />
     <ClCompile Include="src\camera.cpp" />
-    <ClCompile Include="src\guis\gui.cpp" />
-    <ClCompile Include="src\guis\leftPanel.cpp" />
+    <ClCompile Include="src\gui\gui.cpp" />
+    <ClCompile Include="src\gui\leftPanel.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\quad.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shaderProgram.cpp" />
+    <ClCompile Include="src\shaderPrograms.cpp" />
     <ClCompile Include="src\skybox.cpp" />
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
@@ -50,18 +51,19 @@
     <ClInclude Include="dep\stb_image.h" />
     <ClInclude Include="src\blackHole.hpp" />
     <ClInclude Include="src\camera.hpp" />
-    <ClInclude Include="src\guis\gui.hpp" />
-    <ClInclude Include="src\guis\leftPanel.hpp" />
+    <ClInclude Include="src\gui\gui.hpp" />
+    <ClInclude Include="src\gui\leftPanel.hpp" />
     <ClInclude Include="src\quad.hpp" />
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\shaderProgram.hpp" />
+    <ClInclude Include="src\shaderPrograms.hpp" />
     <ClInclude Include="src\skybox.hpp" />
     <ClInclude Include="src\skyboxPaths.hpp" />
     <ClInclude Include="src\window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\FS.glsl" />
-    <None Include="src\shaders\VS.glsl" />
+    <None Include="src\shaders\holeFS.glsl" />
+    <None Include="src\shaders\holeVS.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

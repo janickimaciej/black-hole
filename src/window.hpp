@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gui/leftPanel.hpp"
 #include "scene.hpp"
 
 #include <glad/glad.h>
@@ -9,26 +10,42 @@
 class Window
 {
 public:
-	Window(const glm::ivec2& initialSize);
+	Window();
 	~Window();
 
-	const glm::ivec2& size() const;
-	void setWindowData(Scene& scene);
+	void init(Scene& scene);
 	bool shouldClose() const;
 	void swapBuffers() const;
 	void pollEvents() const;
+
+	const glm::ivec2& viewportSize() const;
 	GLFWwindow* getPtr();
 
 private:
+	static constexpr glm::ivec2 m_initialSize{1900, 1000};
+
 	GLFWwindow* m_windowPtr{};
-	glm::ivec2 m_size{};
+	glm::ivec2 m_viewportSize{m_initialSize - glm::ivec2{LeftPanel::width, 0}};
 	Scene* m_scene{};
 
 	glm::vec2 m_lastCursorPos{};
 
-	static void resizeCallback(GLFWwindow* windowPtr, int width, int height);
-	static void cursorMovementCallback(GLFWwindow* windowPtr, double x, double y);
-	static void scrollCallback(GLFWwindow* windowPtr, double, double yOffset);
+	void resizeCallback(int width, int height);
+	void cursorMovementCallback(double x, double y);
+	void scrollCallback(double, double yOffset);
 
+	void updateViewport() const;
+	glm::vec2 getCursorPos() const;
+	bool isButtonPressed(int button);
 	bool isCursorInGUI();
+
+	template <auto callback, typename... Args>
+	static void callbackWrapper(GLFWwindow* windowPtr, Args... args);
 };
+
+template <auto callback, typename... Args>
+void Window::callbackWrapper(GLFWwindow* windowPtr, Args... args)
+{
+	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
+	(window->*callback)(args...);
+}

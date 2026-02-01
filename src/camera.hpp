@@ -1,14 +1,11 @@
 #pragma once
 
-#include "shaderProgram.hpp"
-
 #include <glm/glm.hpp>
 
 class Camera
 {
 public:
-	Camera(float fovYDeg, float aspectRatio, float nearPlane, float farPlane,
-		const ShaderProgram& shaderProgram);
+	Camera(float fovYDeg, float aspectRatio, float nearPlane, float farPlane);
 	void use() const;
 	glm::mat4 getMatrixInverse() const;
 	void setAspectRatio(float aspectRatio);
@@ -34,8 +31,6 @@ private:
 
 	glm::mat4 m_viewMatrixInverse{1};
 	glm::mat4 m_projectionMatrix{1};
-
-	const ShaderProgram& m_shaderProgram;
 
 	glm::vec3 getPosition() const;
 	void updateViewMatrix();

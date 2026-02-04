@@ -1,11 +1,11 @@
 #version 420 core
 
-layout (location = 0) in vec2 inPositionMesh;
+layout (location = 0) in vec2 inPosMesh;
 
-out vec2 position;
+out vec2 pos;
 
 void main()
 {
-	position = inPositionMesh;
-	gl_Position = vec4(inPositionMesh, 0, 1);
+	pos = inPosMesh;
+	gl_Position = vec4(inPosMesh, 0, 1);
 }

@@ -4,15 +4,15 @@ const float PI = 3.14159265;
 
 struct BlackHole
 {
-	vec3 position;
+	vec3 pos;
 	float mass;
 };
 
-in vec2 position;
+in vec2 pos;
 
 uniform float nearPlane;
 uniform float farPlane;
-uniform vec3 cameraPosition;
+uniform vec3 cameraPos;
 uniform mat4 projectionViewInverse;
 uniform BlackHole blackHole;
 uniform samplerCube skybox;
@@ -28,11 +28,11 @@ float funDeriv(float w, float constTerm);
 void main()
 {
 	vec3 unitIncident = normalize(getIncident());
-	float t = dot(blackHole.position - cameraPosition, unitIncident);
-	vec3 closestPoint = cameraPosition + t * unitIncident;
-	vec3 unitOrthogonal = normalize(blackHole.position - closestPoint);
+	float t = dot(blackHole.pos - cameraPos, unitIncident);
+	vec3 closestPoint = cameraPos + t * unitIncident;
+	vec3 unitOrthogonal = normalize(blackHole.pos - closestPoint);
 
-	float deflectionAngle = getDeflectionAngle(length(blackHole.position - closestPoint));
+	float deflectionAngle = getDeflectionAngle(length(blackHole.pos - closestPoint));
 	if (deflectionAngle < -0.5 || deflectionAngle > 2 * PI)
 	{
 		outColor = vec4(0, 0, 0, 1);
@@ -46,8 +46,8 @@ void main()
 
 vec3 getIncident()
 {
-	return (projectionViewInverse * (farPlane * vec4(position, 1, 1) -
-		nearPlane * vec4(position, -1, 1))).xyz;
+	return (projectionViewInverse * (farPlane * vec4(pos, 1, 1) -
+		nearPlane * vec4(pos, -1, 1))).xyz;
 }
 
 float getDeflectionAngle(float rayBlackHoleDistance)

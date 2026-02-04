@@ -2,20 +2,26 @@
 
 #include "shaderPrograms.hpp"
 
+#include <glad/glad.h>
+
 #include <string>
 
-static constexpr float fovYDeg = 60.0f;
 static constexpr float nearPlane = 0.1f;
 static constexpr float farPlane = 1000.0f;
+static constexpr float fovYDeg = 60.0f;
 
-static constexpr glm::vec3 initialBlackHolePosition{0, 0, 0};
+static constexpr glm::vec3 initialBlackHolePos{0, 0, 0};
 static constexpr float initialBlackHoleMass = 1;
 
 Scene::Scene(const glm::ivec2& viewportSize) :
 	m_viewportSize{viewportSize},
-	m_camera{fovYDeg, static_cast<float>(viewportSize.x) / viewportSize.y, nearPlane, farPlane},
-	m_blackHole{initialBlackHolePosition, initialBlackHoleMass}
-{ }
+	m_camera{viewportSize, nearPlane, farPlane, fovYDeg},
+	m_blackHole{initialBlackHolePos, initialBlackHoleMass}
+{
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_MULTISAMPLE);
+}
 
 void Scene::render() const
 {
@@ -26,7 +32,7 @@ void Scene::render() const
 	m_camera.use();
 
 	ShaderPrograms::hole->use();
-	ShaderPrograms::hole->setUniform("blackHole.position", m_blackHole.position);
+	ShaderPrograms::hole->setUniform("blackHole.pos", m_blackHole.pos);
 	ShaderPrograms::hole->setUniform("blackHole.mass", m_blackHole.mass);
 
 	m_skybox.use();
@@ -36,7 +42,7 @@ void Scene::render() const
 
 void Scene::updateViewportSize()
 {
-	setAspectRatio(static_cast<float>(m_viewportSize.x) / m_viewportSize.y);
+	m_camera.updateViewportSize();
 }
 
 void Scene::addPitchCamera(float pitchRad)
@@ -72,9 +78,4 @@ float Scene::getBlackHoleMass() const
 void Scene::setBlackHoleMass(float mass)
 {
 	m_blackHole.mass = mass;
-}
-
-void Scene::setAspectRatio(float aspectRatio)
-{
-	m_camera.setAspectRatio(aspectRatio);
 }

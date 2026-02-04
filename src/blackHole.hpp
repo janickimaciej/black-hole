@@ -4,6 +4,6 @@
 
 struct BlackHole
 {
-	glm::vec3 position;
+	glm::vec3 pos;
 	float mass;
 };

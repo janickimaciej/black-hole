@@ -33,6 +33,4 @@ private:
 
 	BlackHole m_blackHole{};
 	Skybox m_skybox{skyboxPaths};
-
-	void setAspectRatio(float aspectRatio);
 };

@@ -4,11 +4,11 @@
 
 #include <glm/gtc/constants.hpp>
 
-Camera::Camera(float fovYDeg, float aspectRatio, float nearPlane, float farPlane) :
-	m_aspectRatio{aspectRatio},
-	m_fovYDeg{fovYDeg},
+Camera::Camera(const glm::ivec2& viewportSize, float nearPlane, float farPlane, float fovYDeg) :
+	m_viewportSize{viewportSize},
 	m_nearPlane{nearPlane},
-	m_farPlane{farPlane}
+	m_farPlane{farPlane},
+	m_fovYDeg{fovYDeg}
 {
 	updateViewMatrix();
 	updateProjectionMatrix();
@@ -24,10 +24,8 @@ glm::mat4 Camera::getMatrixInverse() const
 	return m_viewMatrixInverse * glm::inverse(m_projectionMatrix);
 }
 
-void Camera::setAspectRatio(float aspectRatio)
+void Camera::updateViewportSize()
 {
-	m_aspectRatio = aspectRatio;
-
 	updateProjectionMatrix();
 }
 
@@ -84,7 +82,7 @@ void Camera::setRadius(float radius)
 	updateViewMatrix();
 }
 
-glm::vec3 Camera::getPosition() const
+glm::vec3 Camera::getPos() const
 {
 	return glm::vec3{m_viewMatrixInverse[3][0], m_viewMatrixInverse[3][1],
 		m_viewMatrixInverse[3][2]};
@@ -92,7 +90,7 @@ glm::vec3 Camera::getPosition() const
 
 void Camera::updateViewMatrix()
 {
-	glm::vec3 position = m_targetPosition + m_radius *
+	glm::vec3 pos = m_targetPos + m_radius *
 		glm::vec3
 		{
 			-std::cos(m_pitchRad) * std::sin(m_yawRad),
@@ -100,7 +98,7 @@ void Camera::updateViewMatrix()
 			std::cos(m_pitchRad) * std::cos(m_yawRad)
 		};
 
-	glm::vec3 direction = glm::normalize(position - m_targetPosition);
+	glm::vec3 direction = glm::normalize(pos - m_targetPos);
 	glm::vec3 right = glm::normalize(glm::cross(glm::vec3{0, 1, 0}, direction));
 	glm::vec3 up = glm::cross(direction, right);
 
@@ -109,18 +107,19 @@ void Camera::updateViewMatrix()
 		right.x, right.y, right.z, 0,
 		up.x, up.y, up.z, 0,
 		direction.x, direction.y, direction.z, 0,
-		position.x, position.y, position.z, 1
+		pos.x, pos.y, pos.z, 1
 	};
 }
 
 void Camera::updateProjectionMatrix()
 {
+	float aspectRatio = static_cast<float>(m_viewportSize.x) / m_viewportSize.y;
 	float fovYRad = glm::radians(m_fovYDeg);
 	float cot = std::cos(fovYRad / 2) / std::sin(fovYRad / 2);
 
 	m_projectionMatrix =
 	{
-		cot / m_aspectRatio, 0, 0, 0,
+		cot / aspectRatio, 0, 0, 0,
 		0, cot, 0, 0,
 		0, 0, -(m_farPlane + m_nearPlane) / (m_farPlane - m_nearPlane), -1,
 		0, 0, -2 * m_farPlane * m_nearPlane / (m_farPlane - m_nearPlane), 0
@@ -132,6 +131,6 @@ void Camera::updateShaders() const
 	ShaderPrograms::hole->use();
 	ShaderPrograms::hole->setUniform("nearPlane", m_nearPlane);
 	ShaderPrograms::hole->setUniform("farPlane", m_farPlane);
-	ShaderPrograms::hole->setUniform("cameraPosition", getPosition());
+	ShaderPrograms::hole->setUniform("cameraPos", getPos());
 	ShaderPrograms::hole->setUniform("projectionViewInverse", getMatrixInverse());
 }

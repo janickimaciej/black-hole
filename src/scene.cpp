@@ -14,7 +14,6 @@ static constexpr glm::vec3 initialBlackHolePos{0, 0, 0};
 static constexpr float initialBlackHoleMass = 1;
 
 Scene::Scene(const glm::ivec2& viewportSize) :
-	m_viewportSize{viewportSize},
 	m_camera{viewportSize, nearPlane, farPlane, fovYDeg},
 	m_blackHole{initialBlackHolePos, initialBlackHoleMass}
 {

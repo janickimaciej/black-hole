@@ -26,8 +26,6 @@ public:
 	void setBlackHoleMass(float mass);
 
 private:
-	const glm::ivec2& m_viewportSize{};
-
 	Camera m_camera;
 	Quad m_quad{};
 

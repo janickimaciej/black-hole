@@ -8,13 +8,13 @@
 
 static constexpr float nearPlane = 0.1f;
 static constexpr float farPlane = 1000.0f;
-static constexpr float fovYDeg = 60.0f;
+static constexpr float initFOVYDeg = 60.0f;
 
 static constexpr glm::vec3 initialBlackHolePos{0, 0, 0};
 static constexpr float initialBlackHoleMass = 1;
 
 Scene::Scene(const glm::ivec2& viewportSize) :
-	m_camera{viewportSize, nearPlane, farPlane, fovYDeg},
+	m_camera{viewportSize, nearPlane, farPlane, initFOVYDeg},
 	m_blackHole{initialBlackHolePos, initialBlackHoleMass}
 {
 	glEnable(GL_DEPTH_TEST);

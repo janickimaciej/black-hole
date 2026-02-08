@@ -84,19 +84,18 @@ void Camera::setRadius(float radius)
 
 glm::vec3 Camera::getPos() const
 {
-	return glm::vec3{m_viewMatrixInverse[3][0], m_viewMatrixInverse[3][1],
-		m_viewMatrixInverse[3][2]};
-}
-
-void Camera::updateViewMatrix()
-{
-	glm::vec3 pos = m_targetPos + m_radius *
+	return m_targetPos + m_radius *
 		glm::vec3
 		{
 			-std::cos(m_pitchRad) * std::sin(m_yawRad),
 			-std::sin(m_pitchRad),
 			std::cos(m_pitchRad) * std::cos(m_yawRad)
 		};
+}
+
+void Camera::updateViewMatrix()
+{
+	glm::vec3 pos = getPos();
 
 	glm::vec3 direction = glm::normalize(pos - m_targetPos);
 	glm::vec3 right = glm::normalize(glm::cross(glm::vec3{0, 1, 0}, direction));
